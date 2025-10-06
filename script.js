@@ -528,9 +528,7 @@ async function saveData() {
     reader.readAsText(file);
   }
 
-function darkMode() {
-    document.body.classList.toggle("dark-mode");
-}
+
 
 function cloakIcon(url) {
     const link = document.querySelector("link[rel~='icon']");
@@ -572,11 +570,14 @@ settings.addEventListener('click', () => {
     const popupBody = document.getElementById('popupBody');
     popupBody.innerHTML = `
     <button id="settings-button" onclick="tabCloak()">Tab Cloak</button>
+    <br><br>
+    <button id="settings-button" onclick="randomZone()">🎮 Random Game</button>
     <br>
     `;
     popupBody.contentEditable = false;
     document.getElementById('popupOverlay').style.display = "flex";
 });
+
 
 function showContact() {
     document.getElementById('popupTitle').textContent = "Contact";
@@ -692,3 +693,21 @@ HTMLCanvasElement.prototype.toDataURL = function (...args) {
     return "";
 
 };
+
+function randomZone() {
+    // Получаем все ссылки на игры внутри контейнера
+    const links = document.querySelectorAll('#container a');
+
+    // Проверяем, есть ли вообще игры (зоны)
+    if (links.length > 0) {
+        // Выбираем случайную ссылку
+        const randomLink = links[Math.floor(Math.random() * links.length)];
+
+        // Имитируем клик по ней, чтобы игра открылась
+        randomLink.click();
+    } else {
+        // Если игры ещё не загрузились
+        alert("⚠️ No games loaded yet! Try again in a few seconds.");
+    }
+}
+
