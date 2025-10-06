@@ -695,19 +695,18 @@ HTMLCanvasElement.prototype.toDataURL = function (...args) {
 };
 
 function randomZone() {
-    // Получаем все ссылки на игры внутри контейнера
-    const links = document.querySelectorAll('#container a');
+    if (!zones || zones.length === 0) return alert("No zones available");
 
-    // Проверяем, есть ли вообще игры (зоны)
-    if (links.length > 0) {
-        // Выбираем случайную ссылку
-        const randomLink = links[Math.floor(Math.random() * links.length)];
+    const randomIndex = Math.floor(Math.random() * zones.length);
+    const selectedZone = zones[randomIndex];
 
-        // Имитируем клик по ней, чтобы игра открылась
-        randomLink.click();
-    } else {
-        // Если игры ещё не загрузились
-        alert("⚠️ No games loaded yet! Try again in a few seconds.");
-    }
+    openZone(selectedZone);
 }
 
+// ---------------------------
+// 3. Привязка кнопки
+// ---------------------------
+document.addEventListener("DOMContentLoaded", () => {
+    const randomBtn = document.getElementById("randomZoneBtn");
+    randomBtn.addEventListener("click", randomZone);
+});
