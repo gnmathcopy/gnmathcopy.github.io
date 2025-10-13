@@ -6,13 +6,13 @@ const sortOptions = document.getElementById('sortOptions');
 // https://www.jsdelivr.com/tools/purge
 const zonesurls = [
     "https://cdn.jsdelivr.net/%67%68/%67%6e%2d%6d%61%74%68/%61%73%73%65%74%73@%6d%61%69%6e/%7a%6f%6e%65%73%2e%6a%73%6f%6e",
-    "https://cdn.jsdelivr.net/gh/gn-math/assets@latest/zones.json",
-    "https://cdn.jsdelivr.net/gh/gn-math/assets@master/zones.json",
-    "https://cdn.jsdelivr.net/gh/gn-math/assets/zones.json"
+    "https://cdn.jsdelivr.net/gh/gnmathcopy/assets@latest/zones.json",
+    "https://cdn.jsdelivr.net/gh/gnmathcopy/assets@master/zones.json",
+    "https://cdn.jsdelivr.net/gh/gnmathcopy/assets/zones.json"
 ];
 let zonesURL = zonesurls[Math.floor(Math.random() * zonesurls.length)];
-const coverURL = "https://cdn.jsdelivr.net/gh/gn-math/covers@main";
-const htmlURL = "https://cdn.jsdelivr.net/gh/gn-math/html@main";
+const coverURL = "https://cdn.jsdelivr.net/gh/gnmathcopy/covers@main";
+const htmlURL = "https://cdn.jsdelivr.net/gh/gnmathcopy/html@main";
 let zones = [];
 let popularityData = {};
 const featuredContainer = document.getElementById('featuredZones');
@@ -22,22 +22,22 @@ async function listZones() {
       let shajson;
       let sha;
         try {
-          sharesponse = await fetch("https://api.github.com/repos/gn-math/assets/commits?t="+Date.now());
+          sharesponse = await fetch("https://api.github.com/repos/gnmathcopy/assets/commits?t="+Date.now());
         } catch (error) {}
         if (sharesponse && sharesponse.status === 200) {
           try {
             shajson = await sharesponse.json();
             sha = shajson[0]['sha'];
             if (sha) {
-                zonesURL = `https://cdn.jsdelivr.net/gh/gn-math/assets@${sha}/zones.json`;
+                zonesURL = `https://cdn.jsdelivr.net/gh/gnmathcopy/assets@${sha}/zones.json`;
             }
           } catch (error) {
             try {
-                let secondarysharesponse = await fetch("https://raw.githubusercontent.com/gn-math/xml/refs/heads/main/sha.txt?t="+Date.now());
+                let secondarysharesponse = await fetch("https://raw.githubusercontent.com/gnmathcopy/xml/refs/heads/main/sha.txt?t="+Date.now());
                 if (secondarysharesponse && secondarysharesponse.status === 200) {
                     sha = (await secondarysharesponse.text()).trim();
                     if (sha) {
-                        zonesURL = `https://cdn.jsdelivr.net/gh/gn-math/assets@${sha}/zones.json`;
+                        zonesURL = `https://cdn.jsdelivr.net/gh/gnmathcopy/assets@${sha}/zones.json`;
                     }
                 }
             } catch(error) {}
@@ -111,7 +111,7 @@ async function listZones() {
 }
 async function fetchPopularity() {
     try {
-        const response = await fetch("https://data.jsdelivr.com/v1/stats/packages/gh/gn-math/html@main/files?period=year");
+        const response = await fetch("https://data.jsdelivr.com/v1/stats/packages/gh/gnmathcopy/html@main/files?period=year");
         const data = await response.json();
         data.forEach(file => {
             const idMatch = file.name.match(/\/(\d+)\.html$/);
