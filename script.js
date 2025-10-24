@@ -166,7 +166,7 @@ function displayFeaturedZones(featuredZones) {
     if (featuredContainer.innerHTML === "") {
         featuredContainer.innerHTML = "No featured zones found.";
     } else {
-        document.getElementById("allZonesSummary").textContent = `Featured Zones (${featuredZones.length})`;
+        document.getElementById("allZonesSummary").textContent = `Hallowen Games (${featuredZones.length})`;
     }
 
     const lazyImages = document.querySelectorAll('#featuredZones img.lazy-zone-img');
@@ -710,3 +710,4 @@ document.addEventListener("DOMContentLoaded", () => {
     const randomBtn = document.getElementById("randomZoneBtn");
     randomBtn.addEventListener("click", randomZone);
 });
+
