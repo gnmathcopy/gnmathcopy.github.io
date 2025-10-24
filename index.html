@@ -8,6 +8,63 @@
             .red234 {
                 color: orange;
             }
+            header {
+  position: relative;
+  width: 100%;
+}
+
+header {
+  position: relative;
+  width: 100%;
+  height: 80px; /* можно поменять под твой navbar */
+  overflow: hidden;
+}
+
+/* Контент по центру */
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  padding: 0 2rem;
+  position: relative;
+  z-index: 2;
+}
+
+/* Изображения по углам экрана */
+.halloween-img {
+  position: fixed; /* фиксируем к экрану */
+  top: 0;
+  height: 80px; /* совпадает с высотой header */
+  width: auto;
+  object-fit: contain;
+  pointer-events: none;
+  opacity: 0.9;
+  z-index: 1;
+}
+
+.halloween-img.left {
+  left: 0;
+}
+
+.halloween-img.right {
+  right: 0;
+}
+
+/* Адаптив */
+@media (max-width: 768px) {
+  header {
+    height: 60px;
+  }
+
+  .halloween-img {
+    height: 60px;
+    opacity: 0.7;
+  }
+}
+
+
+
         </style>
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
@@ -50,30 +107,32 @@
 </head>
 <body class="dark-mode">
     <header>
+        <img src="images/halloween-left.18384599.png" alt="Halloween Left" class="halloween-img left">
+        <img src="images/halloween-right.1ddd0892.png" alt="Halloween Right" class="halloween-img right">
+      
         <div class="header-content">
-            <div class="logo">gn-math</div>
-            <div class="search-container">
-                <input type="text" id="searchBar" placeholder="Search zones..." oninput="filterZones()">
-                <select id="sortOptions" onchange="sortZones()">
-                    <option value="name">Name</option>
-                    <option value="id">ID (Date)</option>
-                    <option value="popular">Popular</option>
-                </select>
-            </div>
-            <div class="control-buttons">
-                <button id="settings" style="background-color: var(--primary-color); color: white; border: none; border-radius: 4px; padding: 0.5rem 1rem; font-size: 16px; cursor: pointer;">Settings</button>
-            </div>
+          <div class="logo">gn-math</div>
+          <div class="search-container">
+            <input type="text" id="searchBar" placeholder="Search zones..." oninput="filterZones()">
+            <select id="sortOptions" onchange="sortZones()">
+              <option value="name">Name</option>
+              <option value="id">ID (Date)</option>
+              <option value="popular">Popular</option>
+            </select>
+          </div>
+          <div class="control-buttons">
+            <button id="settings" style="background-color: var(--primary-color); color: white; border: none; border-radius: 4px; padding: 0.5rem 1rem; font-size: 16px; cursor: pointer;">Settings</button>
+          </div>
         </div>
-    </header>
+      </header>
+            
     <ins class="adsbygoogle"
     style="display:block; text-align:center;"
     data-ad-client="ca-pub-5521219086088837"
     data-ad-slot="5549138288"
     data-ad-format="auto"
     data-full-width-responsive="true">
-    <h1 class="red234"></h1>
-    <h1 class="red234"></h1>
-    <h1 class="red234"></h1>
+    <h1 class="red234">Hallowen Update!!!</h1>
 </ins>
    <script>
     (adsbygoogle = window.adsbygoogle || []).push({});
@@ -150,9 +209,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
