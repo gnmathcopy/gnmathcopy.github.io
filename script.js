@@ -708,7 +708,11 @@ function randomZone() {
 // ---------------------------
 document.addEventListener("DOMContentLoaded", () => {
     const randomBtn = document.getElementById("randomZoneBtn");
-    randomBtn.addEventListener("click", randomZone);
+    if (randomBtn) { // <-- проверка
+        randomBtn.addEventListener("click", randomZone);
+    }
 });
+
+
 
 
