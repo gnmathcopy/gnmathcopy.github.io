@@ -58,8 +58,8 @@
     --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.7), 0 8px 10px -6px rgb(0 0 0 / 0.7);
     --shadow-glow: 0 0 20px rgba(252, 38, 81, 0.4);
     --gradient-primary: linear-gradient(135deg, #FA7602 0%, #FA7602 100%);
-    --gradient-accent: linear-gradient(135deg, #FA7602 0%, #FA7602 100%);
-    --gradient-surface: linear-gradient(135deg, #FA7602 0%, #FA7602 100%);
+    --gradient-accent: linear-gradient(135deg, #FD9B55 0%, #EC7633 100%);
+    --gradient-surface: linear-gradient(135deg, #3D2D1E 0%, #574533 100%);
 }
 
 * {
@@ -604,4 +604,5 @@ footer {
         transform: translateY(-4px) scale(1.01);
     }
 }
+
 
