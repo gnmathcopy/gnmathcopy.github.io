@@ -10,7 +10,7 @@ const zonesurls = [
     "https://cdn.jsdelivr.net/gh/gnmathcopy/assets@master/zones.json",
     "https://cdn.jsdelivr.net/gh/gnmathcopy/assets@main/zones.json"
 ];
-let zonesURL = zonesurls[Math.floor(Math.random() * zonesurls.length)];
+let zonesURL = "https://cdn.jsdelivr.net/gh/gnmathcopy/assets@main/zones.json";
 const coverURL = "https://cdn.jsdelivr.net/gh/gnmathcopy/covers@main";
 const htmlURL = "https://cdn.jsdelivr.net/gh/gnmathcopy/html@main";
 let zones = [];
@@ -18,40 +18,27 @@ let popularityData = {};
 const featuredContainer = document.getElementById('featuredZones');
 async function listZones() {
     try {
-      let sharesponse;
-      let shajson;
-      let sha;
-        try {
-          sharesponse = await fetch("https://api.github.com/repos/gnmathcopy/assets/commits?t="+Date.now());
-        } catch (error) {}
-        if (sharesponse && sharesponse.status === 200) {
-          try {
-            shajson = await sharesponse.json();
-            sha = shajson[0]['sha'];
-            if (sha) {
-                zonesURL = `https://cdn.jsdelivr.net/gh/gnmathcopy/assets@${sha}/zones.json`;
-            }
-          } catch (error) {
-            try {
-                let secondarysharesponse = await fetch("https://raw.githubusercontent.com/gnmathcopy/xml/refs/heads/main/sha.txt?t="+Date.now());
-                if (secondarysharesponse && secondarysharesponse.status === 200) {
-                    sha = (await secondarysharesponse.text()).trim();
-                    if (sha) {
-                        zonesURL = `https://cdn.jsdelivr.net/gh/gnmathcopy/assets@${sha}/zones.json`;
-                    }
-                }
-            } catch(error) {}
-          }
-        }
-        const response = await fetch(zonesURL+"?t="+Date.now());
+        // Стабильный URL на zones.json
+        let zonesURL = "https://cdn.jsdelivr.net/gh/gnmathcopy/assets@main/zones.json";
+
+        // Загружаем JSON
+        const response = await fetch(zonesURL + "?t=" + Date.now());
+        if (!response.ok) throw new Error(`Failed to fetch zones.json: ${response.status}`);
         const json = await response.json();
         zones = json;
-        zones[0].featured = true; // always gonna be the discord
+
+        // Первая зона всегда будет featured (Discord)
+        zones[0].featured = true;
+
+        // Загружаем данные популярности и сортируем зоны
         await fetchPopularity();
         sortZones();
+
+        // Проверяем параметры URL
         const search = new URLSearchParams(window.location.search);
         const id = search.get('id');
         const embed = window.location.hash.includes("embed");
+
         if (id) {
             const zone = zones.find(zone => zone.id + '' == id + '');
             if (zone) {
@@ -60,55 +47,61 @@ async function listZones() {
                         window.open(zone.url, "_blank");
                     } else {
                         const url = zone.url.replace("{COVER_URL}", coverURL).replace("{HTML_URL}", htmlURL);
-                        fetch(url+"?t="+Date.now()).then(response => response.text()).then(html => {
-                            document.documentElement.innerHTML = html;
-                            const popup = document.createElement("div");
-                            popup.style.position = "fixed";
-                            popup.style.bottom = "20px";
-                            popup.style.right = "20px";
-                            popup.style.backgroundColor = "#cce5ff";
-                            popup.style.color = "#004085";
-                            popup.style.padding = "10px";
-                            popup.style.border = "1px solid #b8daff";
-                            popup.style.borderRadius = "5px";
-                            popup.style.boxShadow = "0px 0px 10px rgba(0,0,0,0.1)";
-                            popup.style.fontFamily = "Arial, sans-serif";
-                            
-                            popup.innerHTML = `Play more games at <a href="https://gn-math.github.io" target="_blank" style="color:#004085; font-weight:bold;">https://gn-math.github.io</a>!`;
-                            
-                            const closeBtn = document.createElement("button");
-                            closeBtn.innerText = "✖";
-                            closeBtn.style.marginLeft = "10px";
-                            closeBtn.style.background = "none";
-                            closeBtn.style.border = "none";
-                            closeBtn.style.cursor = "pointer";
-                            closeBtn.style.color = "#004085";
-                            closeBtn.style.fontWeight = "bold";
-                            
-                            closeBtn.onclick = () => popup.remove();
-                            popup.appendChild(closeBtn);
-                            document.body.appendChild(popup);
-                            document.documentElement.querySelectorAll('script').forEach(oldScript => {
-                                const newScript = document.createElement('script');
-                                if (oldScript.src) {
-                                    newScript.src = oldScript.src;
-                                } else {
-                                    newScript.textContent = oldScript.textContent;
-                                }
-                                document.body.appendChild(newScript);
-                            });
-                        }).catch(error => alert("Failed to load zone: " + error));
+                        fetch(url + "?t=" + Date.now())
+                            .then(response => response.text())
+                            .then(html => {
+                                document.documentElement.innerHTML = html;
+
+                                const popup = document.createElement("div");
+                                popup.style.position = "fixed";
+                                popup.style.bottom = "20px";
+                                popup.style.right = "20px";
+                                popup.style.backgroundColor = "#cce5ff";
+                                popup.style.color = "#004085";
+                                popup.style.padding = "10px";
+                                popup.style.border = "1px solid #b8daff";
+                                popup.style.borderRadius = "5px";
+                                popup.style.boxShadow = "0px 0px 10px rgba(0,0,0,0.1)";
+                                popup.style.fontFamily = "Arial, sans-serif";
+                                
+                                popup.innerHTML = `Play more games at <a href="https://gn-math.github.io" target="_blank" style="color:#004085; font-weight:bold;">https://gn-math.github.io</a>!`;
+                                
+                                const closeBtn = document.createElement("button");
+                                closeBtn.innerText = "✖";
+                                closeBtn.style.marginLeft = "10px";
+                                closeBtn.style.background = "none";
+                                closeBtn.style.border = "none";
+                                closeBtn.style.cursor = "pointer";
+                                closeBtn.style.color = "#004085";
+                                closeBtn.style.fontWeight = "bold";
+                                closeBtn.onclick = () => popup.remove();
+                                popup.appendChild(closeBtn);
+                                document.body.appendChild(popup);
+
+                                document.documentElement.querySelectorAll('script').forEach(oldScript => {
+                                    const newScript = document.createElement('script');
+                                    if (oldScript.src) {
+                                        newScript.src = oldScript.src;
+                                    } else {
+                                        newScript.textContent = oldScript.textContent;
+                                    }
+                                    document.body.appendChild(newScript);
+                                });
+                            })
+                            .catch(error => alert("Failed to load zone: " + error));
                     }
                 } else {
                     openZone(zone);
                 }
             }
         }
+
     } catch (error) {
         console.error(error);
-        container.innerHTML = `Error loading zones: ${error}`;
+        container.innerHTML = `Error loading zones: ${error.message}`;
     }
 }
+
 async function fetchPopularity() {
     try {
         const response = await fetch("https://data.jsdelivr.com/v1/stats/packages/gh/gnmathcopy/html@main/files?period=year");
@@ -712,6 +705,7 @@ document.addEventListener("DOMContentLoaded", () => {
         randomBtn.addEventListener("click", randomZone);
     }
 });
+
 
 
 
