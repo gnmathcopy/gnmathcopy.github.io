@@ -8,7 +8,7 @@ const zonesurls = [
     "https://cdn.jsdelivr.net/%67%68/%67%6e%2d%6d%61%74%68/%61%73%73%65%74%73@%6d%61%69%6e/%7a%6f%6e%65%73%2e%6a%73%6f%6e",
     "https://cdn.jsdelivr.net/gh/gnmathcopy/assets@latest/zones.json",
     "https://cdn.jsdelivr.net/gh/gnmathcopy/assets@master/zones.json",
-    "https://cdn.jsdelivr.net/gh/gnmathcopy/assets/zones.json"
+    "https://cdn.jsdelivr.net/gh/gnmathcopy/assets@main/zones.json"
 ];
 let zonesURL = zonesurls[Math.floor(Math.random() * zonesurls.length)];
 const coverURL = "https://cdn.jsdelivr.net/gh/gnmathcopy/covers@main";
@@ -712,6 +712,7 @@ document.addEventListener("DOMContentLoaded", () => {
         randomBtn.addEventListener("click", randomZone);
     }
 });
+
 
 
 
