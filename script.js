@@ -159,7 +159,7 @@ function displayFeaturedZones(featuredZones) {
     if (featuredContainer.innerHTML === "") {
         featuredContainer.innerHTML = "No featured zones found.";
     } else {
-        document.getElementById("allZonesSummary").textContent = `Featured Games (${featuredZones.length})`;
+        document.getElementById("allZonesSummary").textContent = `Merry Christmas (${featuredZones.length})`;
     }
 
     const lazyImages = document.querySelectorAll('#featuredZones img.lazy-zone-img');
@@ -705,6 +705,7 @@ document.addEventListener("DOMContentLoaded", () => {
         randomBtn.addEventListener("click", randomZone);
     }
 });
+
 
 
 
