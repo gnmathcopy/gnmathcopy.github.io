@@ -23,6 +23,10 @@
     --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.6), 0 4px 6px -4px rgb(0 0 0 / 0.6);
     --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.7), 0 8px 10px -6px rgb(0 0 0 / 0.7);
     --shadow-glow: 0 0 20px rgba(252, 38, 81, 0.4);
+    --radius: 12px;
+    --radius-sm: 8px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
     --gradient-primary: linear-gradient(135deg, #D6001C 0%, #D6001C 100%);
     --gradient-accent: linear-gradient(135deg, #D6001C 0%, #D6001C 100%);
     --gradient-surface: linear-gradient(135deg, #D6001C 0%, #D6001C 100%);
@@ -53,6 +57,10 @@
     --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.6), 0 4px 6px -4px rgb(0 0 0 / 0.6);
     --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.7), 0 8px 10px -6px rgb(0 0 0 / 0.7);
     --shadow-glow: 0 0 20px rgba(252, 38, 81, 0.4);
+    --radius: 12px;
+    --radius-sm: 8px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
     --gradient-primary: linear-gradient(135deg, #D6001C 0%, #D6001C 100%);
     --gradient-accent: linear-gradient(135deg, #D6001C 0%, #D6001C 100%);
     --gradient-surface: linear-gradient(135deg, #D6001C 0%, #D6001C 100%);
@@ -600,6 +608,7 @@ footer {
         transform: translateY(-4px) scale(1.01);
     }
 }
+
 
 
 
