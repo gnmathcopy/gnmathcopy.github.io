@@ -15,6 +15,17 @@ const coverURL = "https://cdn.jsdelivr.net/gh/gnmathcopy/covers@main";
 const htmlURL = "https://cdn.jsdelivr.net/gh/gnmathcopy/html@main";
 let zones = [];
 let popularityData = {};
+// ---- CLICK COUNTER (localStorage) ----
+function getClicks() {
+  return JSON.parse(localStorage.getItem("zone_clicks") || "{}");
+}
+
+function addClick(zoneId) {
+  const clicks = getClicks();
+  clicks[zoneId] = (clicks[zoneId] || 0) + 1;
+  localStorage.setItem("zone_clicks", JSON.stringify(clicks));
+}
+
 const featuredContainer = document.getElementById('featuredZones');
 async function listZones() {
     try {
@@ -103,23 +114,12 @@ async function listZones() {
 }
 
 async function fetchPopularity() {
-    try {
-        const response = await fetch("https://data.jsdelivr.com/v1/stats/packages/gh/gnmathcopy/html@main/files?period=year");
-        const data = await response.json();
-        data.forEach(file => {
-            const idMatch = file.name.match(/\/(\d+)\.html$/);
-            if (idMatch) {
-                const id = parseInt(idMatch[1]);
-                popularityData[id] = file.hits.total;
-            }
-        });
-    } catch (error) {
-        popularityData[0] = 0;
-    }
+  popularityData = getClicks(); // теперь popular = клики
 }
 
+
 function sortZones() {
-    const sortBy = sortOptions.value;
+  const sortBy = sortOptions ? sortOptions.value : "id";
     if (sortBy === 'name') {
         zones.sort((a, b) => a.name.localeCompare(b.name));
     } else if (sortBy === 'id') {
@@ -165,7 +165,7 @@ function displayFeaturedZones(featuredZones) {
     const lazyImages = document.querySelectorAll('#featuredZones img.lazy-zone-img');
     const imageObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
-            if (entry.isIntersecting && !zoneViewer.hidden) {
+          if (entry.isIntersecting) {
                 const img = entry.target;
                 img.src = img.dataset.src;
                 img.classList.remove("lazy-zone-img");
@@ -201,7 +201,16 @@ function displayZones(zones) {
             openZone(file);
         };
         zoneItem.appendChild(button);
-        container.appendChild(zoneItem);
+
+const clicks = getClicks();
+const clickText = document.createElement("div");
+clickText.style.fontSize = "12px";
+clickText.style.opacity = "0.7";
+clickText.textContent = `Clicks: ${clicks[file.id] || 0}`;
+zoneItem.appendChild(clickText);
+
+container.appendChild(zoneItem);
+
     });
     if (container.innerHTML === "") {
         container.innerHTML = "No zones found.";
@@ -212,7 +221,7 @@ function displayZones(zones) {
     const lazyImages = document.querySelectorAll('img.lazy-zone-img');
     const imageObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
-            if (entry.isIntersecting && !zoneViewer.hidden) {
+            if (entry.isIntersecting) {
                 const img = entry.target;
                 img.src = img.dataset.src;
                 img.classList.remove("lazy-zone-img");
@@ -239,16 +248,21 @@ function filterZones() {
 }
 
 function openZone(file) {
-    if (file.url.startsWith("http")) {
-        window.open(file.url, "_blank");
-    } else {
+  addClick(file.id);        // <-- ВАЖНО
+  popularityData = getClicks();
+  sortZones();
+
+  if (file.url.startsWith("http")) {
+      window.open(file.url, "_blank");
+  } else {
         const url = file.url.replace("{COVER_URL}", coverURL).replace("{HTML_URL}", htmlURL);
         fetch(url+"?t="+Date.now()).then(response => response.text()).then(html => {
-            if (zoneFrame.contentDocument === null) {
-                zoneFrame = document.createElement("iframe");
-                zoneFrame.id = "zoneFrame";
-                zoneViewer.appendChild(zoneFrame);
-            }
+          if (!zoneFrame || !zoneFrame.parentNode) {
+            zoneFrame = document.createElement("iframe");
+            zoneFrame.id = "zoneFrame";
+            zoneViewer.appendChild(zoneFrame);
+        }
+        
             zoneFrame.contentDocument.open();
             zoneFrame.contentDocument.write(html);
             zoneFrame.contentDocument.close();
@@ -259,10 +273,13 @@ function openZone(file) {
                 document.getElementById('zoneAuthor').href = file.authorLink;
             }
             zoneViewer.style.display = "block";
-            const url = new URL(window.location);
-            url.searchParams.set('id', file.id);
-            history.pushState(null, '', url.toString());
-            zoneViewer.hidden = true;
+
+          const url = new URL(window.location);
+          url.searchParams.set('id', file.id);
+          history.pushState(null, '', url.toString());
+
+// zoneViewer.hidden = true;  ❌ УДАЛИТЬ
+
         }).catch(error => alert("Failed to load zone: " + error));
     }
 }
@@ -655,9 +672,18 @@ function loadDMCA() {
 function closePopup() {
     document.getElementById('popupOverlay').style.display = "none";
 }
-listZones();
+document.addEventListener("DOMContentLoaded", listZones);
+
 
 const schoolList = ["deledao", "goguardian", "lightspeed", "linewize", "securly", ".edu/"];
+function isBlockedDomain(url) {
+  try {
+      const u = new URL(url, location.origin);
+      return schoolList.some(s => u.hostname.includes(s));
+  } catch {
+      return false;
+  }
+}
 
 function isBlockedDomain(url) {
     const domain = new URL(url, location.origin).hostname + "/";
@@ -666,26 +692,24 @@ function isBlockedDomain(url) {
 
 const originalFetch = window.fetch;
 window.fetch = function (url, options) {
-    if (isBlockedDomain(url)) {
-        console.warn(`lam`);
-        return Promise.reject(new Error("lam"));
-    }
-    return originalFetch.apply(this, arguments);
+  try {
+      if (typeof url === "string" && isBlockedDomain(url)) {
+          return Promise.reject(new Error("Blocked"));
+      }
+  } catch (e) {}
+  return originalFetch.call(this, url, options);
 };
+
 
 const originalOpen = XMLHttpRequest.prototype.open;
 XMLHttpRequest.prototype.open = function (method, url) {
-    if (isBlockedDomain(url)) {
-        console.warn(`lam`);
-        return;
-    }
-    return originalOpen.apply(this, arguments);
+  if (isBlockedDomain(url)) {
+      throw new Error("Blocked XHR");
+  }
+  return originalOpen.apply(this, arguments);
 };
 
-HTMLCanvasElement.prototype.toDataURL = function (...args) {
-    return "";
 
-};
 
 function randomZone() {
     if (!zones || zones.length === 0) return alert("No zones available");
