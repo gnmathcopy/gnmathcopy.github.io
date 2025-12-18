@@ -1,4 +1,4 @@
-const container = document.getElementById('container');
+cconst container = document.getElementById('container');
 const zoneViewer = document.getElementById('zoneViewer');
 let zoneFrame = document.getElementById('zoneFrame');
 const searchBar = document.getElementById('searchBar');
@@ -15,6 +15,17 @@ const coverURL = "https://cdn.jsdelivr.net/gh/gnmathcopy/covers@main";
 const htmlURL = "https://cdn.jsdelivr.net/gh/gnmathcopy/html@main";
 let zones = [];
 let popularityData = {};
+// ---- CLICK COUNTER (localStorage) ----
+function getClicks() {
+  return JSON.parse(localStorage.getItem("zone_clicks") || "{}");
+}
+
+function addClick(zoneId) {
+  const clicks = getClicks();
+  clicks[zoneId] = (clicks[zoneId] || 0) + 1;
+  localStorage.setItem("zone_clicks", JSON.stringify(clicks));
+}
+
 const featuredContainer = document.getElementById('featuredZones');
 async function listZones() {
     try {
@@ -103,20 +114,9 @@ async function listZones() {
 }
 
 async function fetchPopularity() {
-    try {
-        const response = await fetch("https://data.jsdelivr.com/v1/stats/packages/gh/gnmathcopy/html@main/files?period=year");
-        const data = await response.json();
-        data.forEach(file => {
-            const idMatch = file.name.match(/\/(\d+)\.html$/);
-            if (idMatch) {
-                const id = parseInt(idMatch[1]);
-                popularityData[id] = file.hits.total;
-            }
-        });
-    } catch (error) {
-        popularityData[0] = 0;
-    }
+  popularityData = getClicks(); // теперь popular = клики
 }
+
 
 function sortZones() {
     const sortBy = sortOptions.value;
@@ -201,7 +201,16 @@ function displayZones(zones) {
             openZone(file);
         };
         zoneItem.appendChild(button);
-        container.appendChild(zoneItem);
+
+const clicks = getClicks();
+const clickText = document.createElement("div");
+clickText.style.fontSize = "12px";
+clickText.style.opacity = "0.7";
+clickText.textContent = `Clicks: ${clicks[file.id] || 0}`;
+zoneItem.appendChild(clickText);
+
+container.appendChild(zoneItem);
+
     });
     if (container.innerHTML === "") {
         container.innerHTML = "No zones found.";
@@ -239,9 +248,12 @@ function filterZones() {
 }
 
 function openZone(file) {
-    if (file.url.startsWith("http")) {
-        window.open(file.url, "_blank");
-    } else {
+  addClick(file.id);        // <-- ВАЖНО
+  popularityData = getClicks();
+
+  if (file.url.startsWith("http")) {
+      window.open(file.url, "_blank");
+  } else {
         const url = file.url.replace("{COVER_URL}", coverURL).replace("{HTML_URL}", htmlURL);
         fetch(url+"?t="+Date.now()).then(response => response.text()).then(html => {
             if (zoneFrame.contentDocument === null) {
@@ -705,7 +717,6 @@ document.addEventListener("DOMContentLoaded", () => {
         randomBtn.addEventListener("click", randomZone);
     }
 });
-
 
 
 
