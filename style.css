@@ -33,38 +33,39 @@
 }
 
 .dark-mode {
-    --primary: #00873E;
-    --primary-hover: #005226;
-    --primary-light: rgba(252, 38, 81, 0.15);
-    --primary-lighter: rgba(252, 38, 81, 0.08);
-    --accent: #a855f7;
-    --accent-light: rgba(168, 85, 247, 0.15);
-    --success: #34d399;
-    --warning: #D6001C;
-    --text: #f1f5f9;
-    --text-muted: #94a3b8;
+    --primary: #2563eb; /* soft blue */
+    --primary-hover: #1d4ed8;
+    --primary-light: rgba(37, 99, 235, 0.15);
+    --primary-lighter: rgba(37, 99, 235, 0.07);
+
+    --accent: #7c3aed; /* violet */
+    --accent-light: rgba(124, 58, 237, 0.15);
+
+    --success: #16a34a;
+    --warning: #eab308;
+
+    --text: #0f172a;       /* dark text */
+    --text-muted: #475569;
     --text-light: #64748b;
-    --bg: #00873E;
-    --bg-secondary: #D6001C;
-    --surface: #1e293b;
-    --surface-hover: #334155;
-    --border: #334155;
-    --border-light: #475569;
-    --glass: rgba(30, 41, 59, 0.8);
-    --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.4);
-    --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.5), 0 1px 2px -1px rgb(0 0 0 / 0.5);
-    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.5), 0 2px 4px -2px rgb(0 0 0 / 0.5);
-    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.6), 0 4px 6px -4px rgb(0 0 0 / 0.6);
-    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.7), 0 8px 10px -6px rgb(0 0 0 / 0.7);
-    --shadow-glow: 0 0 20px rgba(252, 38, 81, 0.4);
-    --radius: 12px;
-    --radius-sm: 8px;
-    --radius-lg: 16px;
-    --radius-xl: 20px;
-    --gradient-primary: linear-gradient(135deg, #D6001C 0%, #D6001C 100%);
-    --gradient-accent: linear-gradient(135deg, #D6001C 0%, #D6001C 100%);
-    --gradient-surface: linear-gradient(135deg, #D6001C 0%, #D6001C 100%);
+
+    --bg: #f1f5f9;         /* soft gray, not white */
+    --bg-secondary: #e5e7eb;
+
+    --surface: #ffffff;   /* cards */
+    --surface-hover: #f1f5f9;
+
+    --border: #e2e8f0;
+    --border-light: #cbd5f5;
+
+    --glass: rgba(255, 255, 255, 0.75);
+
+    --shadow-glow: 0 0 18px rgba(37, 99, 235, 0.25);
+
+    --gradient-primary: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+    --gradient-accent: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%);
+    --gradient-surface: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
 }
+
 
 * {
     box-sizing: border-box;
@@ -608,6 +609,7 @@ footer {
         transform: translateY(-4px) scale(1.01);
     }
 }
+
 
 
 
