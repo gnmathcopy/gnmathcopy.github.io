@@ -154,6 +154,12 @@ function displayFeaturedZones(featuredZones) {
             openZone(file);
         };
         zoneItem.appendChild(button);
+        const clicks = document.createElement("div");
+        clicks.style.fontSize = "12px";
+        clicks.style.opacity = "0.7";
+        clicks.textContent = `Clicks: ${popularityData[file.id] || 0}`;
+        zoneItem.appendChild(clicks);
+
         featuredContainer.appendChild(zoneItem);
     });
     if (featuredContainer.innerHTML === "") {
@@ -201,6 +207,12 @@ function displayZones(zones) {
             openZone(file);
         };
         zoneItem.appendChild(button);
+        const clicks = document.createElement("div");
+        clicks.style.fontSize = "12px";
+        clicks.style.opacity = "0.7";
+        clicks.textContent = `Clicks: ${popularityData[file.id] || 0}`;
+        zoneItem.appendChild(clicks);
+
         container.appendChild(zoneItem);
     });
     if (container.innerHTML === "") {
@@ -705,7 +717,6 @@ document.addEventListener("DOMContentLoaded", () => {
         randomBtn.addEventListener("click", randomZone);
     }
 });
-
 
 
 
