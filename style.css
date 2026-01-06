@@ -48,8 +48,8 @@
     --text-muted: #475569;
     --text-light: #64748b;
 
-    --bg: #f1f5f9;         /* soft gray, not white */
-    --bg-secondary: #e5e7eb;
+    --bg: #81a6f7;         /* soft gray, not white */
+    --bg-secondary: #81a6f7;
 
     --surface: #ffffff;   /* cards */
     --surface-hover: #f1f5f9;
@@ -609,6 +609,7 @@ footer {
         transform: translateY(-4px) scale(1.01);
     }
 }
+
 
 
 
