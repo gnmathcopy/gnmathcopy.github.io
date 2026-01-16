@@ -119,6 +119,13 @@ function fetchPopularity() {
         document.body.appendChild(script);
     });
 }
+function startAutoRefresh() {
+    setInterval(async () => {
+        await fetchPopularity();
+        sortZones(); // пересортирует и обновит надписи "Clicks"
+    }, 3000);
+}
+
 
 
 function sortZones() {
@@ -677,6 +684,7 @@ function closePopup() {
     document.getElementById('popupOverlay').style.display = "none";
 }
 listZones();
+startAutoRefresh();
 
 const schoolList = ["deledao", "goguardian", "lightspeed", "linewize", "securly", ".edu/"];
 
@@ -726,6 +734,7 @@ document.addEventListener("DOMContentLoaded", () => {
         randomBtn.addEventListener("click", randomZone);
     }
 });
+
 
 
 
