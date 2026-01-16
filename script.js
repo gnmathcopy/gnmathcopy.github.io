@@ -1,4 +1,5 @@
 const container = document.getElementById('container');
+const STATS_API = "https://script.google.com/macros/s/AKfycbw4kJZcGOgpW7GfrsPLxGMQIQNf1GFGAXD4UBx2PRqU4isnRxwNGFJ2LszOlQgboyqyrQ/exec";
 const zoneViewer = document.getElementById('zoneViewer');
 let zoneFrame = document.getElementById('zoneFrame');
 const searchBar = document.getElementById('searchBar');
@@ -104,17 +105,10 @@ async function listZones() {
 
 async function fetchPopularity() {
     try {
-        const response = await fetch("https://data.jsdelivr.com/v1/stats/packages/gh/gnmathcopy/html@main/files?period=year");
-        const data = await response.json();
-        data.forEach(file => {
-            const idMatch = file.name.match(/\/(\d+)\.html$/);
-            if (idMatch) {
-                const id = parseInt(idMatch[1]);
-                popularityData[id] = file.hits.total;
-            }
-        });
-    } catch (error) {
-        popularityData[0] = 0;
+        const res = await fetch(`${STATS_API}?action=getStats`);
+        popularityData = await res.json();
+    } catch {
+        popularityData = {};
     }
 }
 
@@ -249,8 +243,13 @@ function filterZones() {
     }
     displayZones(filteredZones);
 }
+function registerClick(id) {
+    fetch(`${STATS_API}?id=${encodeURIComponent(id)}`)
+        .catch(() => {});
+}
 
 function openZone(file) {
+    registerClick(file.id);
     if (file.url.startsWith("http")) {
         window.open(file.url, "_blank");
     } else {
@@ -717,7 +716,6 @@ document.addEventListener("DOMContentLoaded", () => {
         randomBtn.addEventListener("click", randomZone);
     }
 });
-
 
 
 
