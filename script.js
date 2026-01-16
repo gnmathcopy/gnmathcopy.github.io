@@ -1,5 +1,5 @@
 const container = document.getElementById('container');
-const STATS_API = "https://script.google.com/macros/s/AKfycbw4kJZcGOgpW7GfrsPLxGMQIQNf1GFGAXD4UBx2PRqU4isnRxwNGFJ2LszOlQgboyqyrQ/exec";
+const STATS_API = "https://script.google.com/macros/s/AKfycbw4kJZcGOgpW7GfrsPLxGMQIQNf1GFGAXD4UBx2PRqU4isnRxwNGFJ2LszOlQgboyqyrQ/exec"
 const zoneViewer = document.getElementById('zoneViewer');
 let zoneFrame = document.getElementById('zoneFrame');
 const searchBar = document.getElementById('searchBar');
@@ -716,6 +716,7 @@ document.addEventListener("DOMContentLoaded", () => {
         randomBtn.addEventListener("click", randomZone);
     }
 });
+
 
 
 
