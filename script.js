@@ -103,14 +103,23 @@ async function listZones() {
     }
 }
 
-async function fetchPopularity() {
-    try {
-        const res = await fetch(`${STATS_API}?action=getStats`);
-        popularityData = await res.json();
-    } catch {
-        popularityData = {};
-    }
+function fetchPopularity() {
+    return new Promise(resolve => {
+        const cb = "jsonp_cb_" + Date.now();
+
+        window[cb] = function (data) {
+            popularityData = data || {};
+            delete window[cb];
+            script.remove();
+            resolve();
+        };
+
+        const script = document.createElement("script");
+        script.src = `${STATS_API}?action=getStats&callback=${cb}`;
+        document.body.appendChild(script);
+    });
 }
+
 
 function sortZones() {
     const sortBy = sortOptions.value;
@@ -244,9 +253,10 @@ function filterZones() {
     displayZones(filteredZones);
 }
 function registerClick(id) {
-    fetch(`${STATS_API}?id=${encodeURIComponent(id)}`)
-        .catch(() => {});
+    const img = new Image();
+    img.src = `${STATS_API}?id=${encodeURIComponent(id)}&t=${Date.now()}`;
 }
+
 
 function openZone(file) {
     registerClick(file.id);
@@ -716,6 +726,7 @@ document.addEventListener("DOMContentLoaded", () => {
         randomBtn.addEventListener("click", randomZone);
     }
 });
+
 
 
 
