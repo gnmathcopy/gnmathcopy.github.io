@@ -123,7 +123,7 @@ function startAutoRefresh() {
     setInterval(async () => {
         await fetchPopularity();
         sortZones(); // пересортирует и обновит надписи "Clicks"
-    }, 3000);
+    }, 30000);
 }
 
 
@@ -734,6 +734,7 @@ document.addEventListener("DOMContentLoaded", () => {
         randomBtn.addEventListener("click", randomZone);
     }
 });
+
 
 
 
