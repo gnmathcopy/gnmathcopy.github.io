@@ -593,11 +593,46 @@ settings.addEventListener('click', () => {
     <button id="settings-button" onclick="tabCloak()">Tab Cloak</button>
     <br><br>
     <button id="settings-button" onclick="randomZone()">🎮 Random Game</button>
-    <br>
-    `;
+    <br><br>
+    <button id="settings-button" onclick="openDevConsole()">🛠 Dev Console</button>
+`;
+
     popupBody.contentEditable = false;
     document.getElementById('popupOverlay').style.display = "flex";
 });
+function openDevConsole() {
+  document.getElementById("popupTitle").textContent = "Developer Console";
+  document.getElementById("popupBody").innerHTML = `
+    <textarea id="devConsoleInput" style="width:100%;height:120px"></textarea>
+    <button onclick="runDevCommand()">Run</button>
+  `;
+  document.getElementById("popupOverlay").style.display = "flex";
+}
+function runDevCommand() {
+  const input = document.getElementById("devConsoleInput").value.trim();
+
+  if (!input.startsWith("/announcement")) {
+    alert("Unknown command");
+    return;
+  }
+
+  const args = input.match(/"([^"]*)"/g)?.map(s => s.replace(/"/g, "")) || [];
+  const duration = parseInt(input.split(" ").pop());
+
+  const [title, desc, img] = args;
+
+  const ann = {
+    id: Date.now(),
+    title,
+    desc,
+    img: img || null,
+    expires: Date.now() + duration
+  };
+
+  localStorage.setItem("globalAnnouncement", JSON.stringify(ann));
+  alert("Announcement created");
+}
+
 
 
 function showContact() {
@@ -685,6 +720,35 @@ function closePopup() {
 }
 listZones();
 startAutoRefresh();
+function showAnnouncementIfNeeded() {
+  const ann = JSON.parse(localStorage.getItem("globalAnnouncement") || "null");
+  if (!ann) return;
+
+  if (Date.now() > ann.expires) return;
+
+  if (localStorage.getItem("seenAnnouncement_" + ann.id)) return;
+
+  document.getElementById("annTitle").textContent = ann.title;
+  document.getElementById("annDesc").textContent = ann.desc;
+
+  const img = document.getElementById("annImg");
+  if (ann.img) {
+    img.src = ann.img;
+    img.style.display = "block";
+  } else {
+    img.style.display = "none";
+  }
+
+  document.getElementById("announcementOverlay").style.display = "flex";
+
+  document.querySelector(".announcement-close").onclick = () => {
+    localStorage.setItem("seenAnnouncement_" + ann.id, "1");
+    document.getElementById("announcementOverlay").style.display = "none";
+  };
+}
+
+document.addEventListener("DOMContentLoaded", showAnnouncementIfNeeded);
+
 
 const schoolList = ["deledao", "goguardian", "lightspeed", "linewize", "securly", ".edu/"];
 
@@ -734,6 +798,7 @@ document.addEventListener("DOMContentLoaded", () => {
         randomBtn.addEventListener("click", randomZone);
     }
 });
+
 
 
 
