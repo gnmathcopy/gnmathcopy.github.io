@@ -1,5 +1,6 @@
 const container = document.getElementById('container');
 const STATS_API = "https://script.google.com/macros/s/AKfycbw4kJZcGOgpW7GfrsPLxGMQIQNf1GFGAXD4UBx2PRqU4isnRxwNGFJ2LszOlQgboyqyrQ/exec"
+const ANN_API = "https://script.google.com/macros/s/AKfycbzkdJcPK8ijQTX74I6M7cTIPB0C5K_JEgoPIibiFZQ9grvqAlBLaPW6IUHrSwvtdblqYQ/exec";
     const zoneViewer = document.getElementById('zoneViewer');
 let zoneFrame = document.getElementById('zoneFrame');
 const searchBar = document.getElementById('searchBar');
@@ -612,7 +613,7 @@ window.openDevConsole = function () {
 
 
 window.runDevCommand = async function () {
-  const input = devConsoleInput.value.trim();
+  const input = document.getElementById("devConsoleInput").value.trim();
   if (!input.startsWith("/announcement")) return;
 
   const args = input.match(/"([^"]*)"/g)?.map(x => x.replace(/"/g,"")) || [];
@@ -620,10 +621,14 @@ window.runDevCommand = async function () {
 
   const [title, desc, img] = args;
 
-  await fetch(ANN_API, {
-    method: "POST",
-    body: JSON.stringify({ title, desc, img, duration })
-  });
+await fetch(ANN_API, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({ title, desc, img, duration })
+});
+
 
   alert("GLOBAL announcement sent");
 };
@@ -717,7 +722,7 @@ function closePopup() {
 }
 listZones();
 startAutoRefresh();
-const ANN_API = "https://script.google.com/macros/s/AKfycbzkdJcPK8ijQTX74I6M7cTIPB0C5K_JEgoPIibiFZQ9grvqAlBLaPW6IUHrSwvtdblqYQ/exec";
+
 
 async function showAnnouncementIfNeeded() {
   const res = await fetch(ANN_API);
@@ -797,6 +802,7 @@ document.addEventListener("DOMContentLoaded", () => {
         randomBtn.addEventListener("click", randomZone);
     }
 });
+
 
 
 
