@@ -723,6 +723,10 @@ function closePopup() {
 listZones();
 startAutoRefresh();
 
+const annTitle = document.getElementById("annTitle");
+const annDesc = document.getElementById("annDesc");
+const annImg = document.getElementById("annImg");
+const announcementOverlay = document.getElementById("announcementOverlay");
 
 async function showAnnouncementIfNeeded() {
   const res = await fetch(ANN_API);
@@ -802,6 +806,7 @@ document.addEventListener("DOMContentLoaded", () => {
         randomBtn.addEventListener("click", randomZone);
     }
 });
+
 
 
 
