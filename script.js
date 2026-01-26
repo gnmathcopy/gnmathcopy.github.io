@@ -623,11 +623,10 @@ window.runDevCommand = async function () {
 
 await fetch(ANN_API, {
   method: "POST",
-  headers: {
-    "Content-Type": "application/json"
-  },
+  mode: "no-cors",
   body: JSON.stringify({ title, desc, img, duration })
 });
+
 
 
   alert("GLOBAL announcement sent");
@@ -728,30 +727,38 @@ const annDesc = document.getElementById("annDesc");
 const annImg = document.getElementById("annImg");
 const announcementOverlay = document.getElementById("announcementOverlay");
 
-async function showAnnouncementIfNeeded() {
-  const res = await fetch(ANN_API);
-  const ann = await res.json();
-  if (!ann.id) return;
+function showAnnouncementIfNeeded() {
+  const cb = "ann_cb_" + Date.now();
 
-  if (Date.now() > ann.expires) return;
-  if (localStorage.getItem("seenAnnouncement_" + ann.id)) return;
+  window[cb] = function (ann) {
+    delete window[cb];
+    script.remove();
 
-  annTitle.textContent = ann.title;
-  annDesc.textContent = ann.desc;
+    if (!ann || !ann.id) return;
+    if (Date.now() > ann.expires) return;
+    if (localStorage.getItem("seenAnnouncement_" + ann.id)) return;
 
-  if (ann.img) {
-    annImg.src = ann.img;
-    annImg.style.display = "block";
-  } else {
-    annImg.style.display = "none";
-  }
+    annTitle.textContent = ann.title;
+    annDesc.textContent = ann.desc;
 
-  announcementOverlay.style.display = "flex";
+    if (ann.img) {
+      annImg.src = ann.img;
+      annImg.style.display = "block";
+    } else {
+      annImg.style.display = "none";
+    }
 
-  document.querySelector(".announcement-close").onclick = () => {
-    localStorage.setItem("seenAnnouncement_" + ann.id, "1");
-    announcementOverlay.style.display = "none";
+    announcementOverlay.style.display = "flex";
+
+    document.querySelector(".announcement-close").onclick = () => {
+      localStorage.setItem("seenAnnouncement_" + ann.id, "1");
+      announcementOverlay.style.display = "none";
+    };
   };
+
+  const script = document.createElement("script");
+  script.src = `${ANN_API}?action=get&callback=${cb}`;
+  document.body.appendChild(script);
 }
 
 
@@ -806,6 +813,7 @@ document.addEventListener("DOMContentLoaded", () => {
         randomBtn.addEventListener("click", randomZone);
     }
 });
+
 
 
 
