@@ -720,32 +720,34 @@ function closePopup() {
 }
 listZones();
 startAutoRefresh();
-function showAnnouncementIfNeeded() {
-  const ann = JSON.parse(localStorage.getItem("globalAnnouncement") || "null");
-  if (!ann) return;
+const ANN_API = "https://script.google.com/macros/s/AKfycbzkdJcPK8ijQTX74I6M7cTIPB0C5K_JEgoPIibiFZQ9grvqAlBLaPW6IUHrSwvtdblqYQ/exec";
+
+async function showAnnouncementIfNeeded() {
+  const res = await fetch(ANN_API);
+  const ann = await res.json();
+  if (!ann.id) return;
 
   if (Date.now() > ann.expires) return;
-
   if (localStorage.getItem("seenAnnouncement_" + ann.id)) return;
 
-  document.getElementById("annTitle").textContent = ann.title;
-  document.getElementById("annDesc").textContent = ann.desc;
+  annTitle.textContent = ann.title;
+  annDesc.textContent = ann.desc;
 
-  const img = document.getElementById("annImg");
   if (ann.img) {
-    img.src = ann.img;
-    img.style.display = "block";
+    annImg.src = ann.img;
+    annImg.style.display = "block";
   } else {
-    img.style.display = "none";
+    annImg.style.display = "none";
   }
 
-  document.getElementById("announcementOverlay").style.display = "flex";
+  announcementOverlay.style.display = "flex";
 
   document.querySelector(".announcement-close").onclick = () => {
     localStorage.setItem("seenAnnouncement_" + ann.id, "1");
-    document.getElementById("announcementOverlay").style.display = "none";
+    announcementOverlay.style.display = "none";
   };
 }
+
 
 document.addEventListener("DOMContentLoaded", showAnnouncementIfNeeded);
 
@@ -798,6 +800,7 @@ document.addEventListener("DOMContentLoaded", () => {
         randomBtn.addEventListener("click", randomZone);
     }
 });
+
 
 
 
