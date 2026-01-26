@@ -612,7 +612,7 @@ window.openDevConsole = function () {
 
 
 
-window.runDevCommand = async function () {
+window.runDevCommand = function () {
   const input = document.getElementById("devConsoleInput").value.trim();
   if (!input.startsWith("/announcement")) return;
 
@@ -621,17 +621,28 @@ window.runDevCommand = async function () {
 
   const [title, desc, img] = args;
 
-const params = new URLSearchParams({
-  title,
-  desc,
-  img: img || "",
-  duration
-});
+  const cb = "ann_set_cb_" + Date.now();
 
-await fetch(`${ANN_API}?action=set&${params.toString()}`);
-alert("GLOBAL announcement sent");
+  window[cb] = function () {
+    delete window[cb];
+    script.remove();
+    alert("GLOBAL announcement sent");
+  };
 
+  const params = new URLSearchParams({
+    action: "set",
+    title,
+    desc,
+    img: img || "",
+    duration,
+    callback: cb
+  });
+
+  const script = document.createElement("script");
+  script.src = `${ANN_API}?${params.toString()}`;
+  document.body.appendChild(script);
 };
+
 
 
 
@@ -814,6 +825,7 @@ document.addEventListener("DOMContentLoaded", () => {
         randomBtn.addEventListener("click", randomZone);
     }
 });
+
 
 
 
