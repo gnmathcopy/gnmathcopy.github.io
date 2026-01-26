@@ -617,7 +617,7 @@ window.runDevCommand = async function () {
   if (!input.startsWith("/announcement")) return;
 
   const args = input.match(/"([^"]*)"/g)?.map(x => x.replace(/"/g,"")) || [];
-  const duration = parseInt(input.split(" ").pop());
+  const duration = Number(input.split(" ").pop()) || 0;
 
   const [title, desc, img] = args;
 
@@ -814,6 +814,7 @@ document.addEventListener("DOMContentLoaded", () => {
         randomBtn.addEventListener("click", randomZone);
     }
 });
+
 
 
 
