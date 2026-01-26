@@ -621,15 +621,16 @@ window.runDevCommand = async function () {
 
   const [title, desc, img] = args;
 
-await fetch(ANN_API, {
-  method: "POST",
-  mode: "no-cors",
-  body: JSON.stringify({ title, desc, img, duration })
+const params = new URLSearchParams({
+  title,
+  desc,
+  img: img || "",
+  duration
 });
 
+await fetch(`${ANN_API}?action=set&${params.toString()}`);
+alert("GLOBAL announcement sent");
 
-
-  alert("GLOBAL announcement sent");
 };
 
 
@@ -813,6 +814,7 @@ document.addEventListener("DOMContentLoaded", () => {
         randomBtn.addEventListener("click", randomZone);
     }
 });
+
 
 
 
