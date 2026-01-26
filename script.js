@@ -600,38 +600,23 @@ settings.addEventListener('click', () => {
     popupBody.contentEditable = false;
     document.getElementById('popupOverlay').style.display = "flex";
 });
-function openDevConsole() {
-  document.getElementById("popupTitle").textContent = "Developer Console";
-  document.getElementById("popupBody").innerHTML = `
-    <textarea id="devConsoleInput" style="width:100%;height:120px"></textarea>
-    <button onclick="runDevCommand()">Run</button>
-  `;
-  document.getElementById("popupOverlay").style.display = "flex";
-}
-function runDevCommand() {
-  const input = document.getElementById("devConsoleInput").value.trim();
+async function runDevCommand() {
+  const input = devConsoleInput.value.trim();
+  if (!input.startsWith("/announcement")) return;
 
-  if (!input.startsWith("/announcement")) {
-    alert("Unknown command");
-    return;
-  }
-
-  const args = input.match(/"([^"]*)"/g)?.map(s => s.replace(/"/g, "")) || [];
+  const args = input.match(/"([^"]*)"/g)?.map(x => x.replace(/"/g,"")) || [];
   const duration = parseInt(input.split(" ").pop());
 
   const [title, desc, img] = args;
 
-  const ann = {
-    id: Date.now(),
-    title,
-    desc,
-    img: img || null,
-    expires: Date.now() + duration
-  };
+  await fetch(ANN_API, {
+    method: "POST",
+    body: JSON.stringify({ title, desc, img, duration })
+  });
 
-  localStorage.setItem("globalAnnouncement", JSON.stringify(ann));
-  alert("Announcement created");
+  alert("GLOBAL announcement sent");
 }
+
 
 
 
@@ -800,6 +785,7 @@ document.addEventListener("DOMContentLoaded", () => {
         randomBtn.addEventListener("click", randomZone);
     }
 });
+
 
 
 
