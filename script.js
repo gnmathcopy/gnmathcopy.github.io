@@ -600,7 +600,18 @@ settings.addEventListener('click', () => {
     popupBody.contentEditable = false;
     document.getElementById('popupOverlay').style.display = "flex";
 });
-async function runDevCommand() {
+window.openDevConsole = function () {
+  document.getElementById("popupTitle").textContent = "Developer Console";
+  document.getElementById("popupBody").innerHTML = `
+    <textarea id="devConsoleInput" style="width:100%;height:120px"></textarea>
+    <button onclick="runDevCommand()">Run</button>
+  `;
+  document.getElementById("popupOverlay").style.display = "flex";
+};
+
+
+
+window.runDevCommand = async function () {
   const input = devConsoleInput.value.trim();
   if (!input.startsWith("/announcement")) return;
 
@@ -615,7 +626,8 @@ async function runDevCommand() {
   });
 
   alert("GLOBAL announcement sent");
-}
+};
+
 
 
 
@@ -785,6 +797,7 @@ document.addEventListener("DOMContentLoaded", () => {
         randomBtn.addEventListener("click", randomZone);
     }
 });
+
 
 
 
