@@ -112,6 +112,7 @@ header {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    width: 100px
 }
 
 .search-container {
@@ -651,6 +652,7 @@ footer {
         transform: translateY(-4px) scale(1.01);
     }
 }
+
 
 
 
