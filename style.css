@@ -32,38 +32,48 @@
     --gradient-surface: linear-gradient(135deg, #D6001C 0%, #D6001C 100%);
 }
 
-.dark-mode {
-    --primary: #2563eb; /* soft blue */
-    --primary-hover: #1d4ed8;
-    --primary-light: rgba(37, 99, 235, 0.15);
-    --primary-lighter: rgba(37, 99, 235, 0.07);
+.rose-mode {
+    /* primary brand color */
+    --primary: #f52b53;
+    --primary-hover: #e02449;
+    --primary-light: rgba(245, 43, 83, 0.15);
+    --primary-lighter: rgba(245, 43, 83, 0.07);
 
-    --accent: #7c3aed; /* violet */
-    --accent-light: rgba(124, 58, 237, 0.15);
+    /* accent (same family, slightly deeper) */
+    --accent: #c81e3f;
+    --accent-light: rgba(200, 30, 63, 0.15);
 
+    /* states */
     --success: #16a34a;
-    --warning: #eab308;
+    --warning: #f59e0b;
 
-    --text: #0f172a;       /* dark text */
-    --text-muted: #475569;
-    --text-light: #64748b;
+    /* text */
+    --text: #1f2933;        /* near-black for readability */
+    --text-muted: #6b7280;
+    --text-light: #9ca3af;
 
-    --bg: #81a6f7;         /* soft gray, not white */
-    --bg-secondary: #81a6f7;
+    /* backgrounds */
+    --bg: #ffffff;         /* pure white */
+    --bg-secondary: #fff5f7; /* very light pink tint */
 
-    --surface: #ffffff;   /* cards */
-    --surface-hover: #f1f5f9;
+    /* surfaces (cards, modals) */
+    --surface: #ffffff;
+    --surface-hover: #fff1f4;
 
-    --border: #e2e8f0;
-    --border-light: #cbd5f5;
+    /* borders */
+    --border: #f3c2cd;
+    --border-light: #fde2e8;
 
-    --glass: rgba(255, 255, 255, 0.75);
+    /* glass / blur */
+    --glass: rgba(255, 255, 255, 0.8);
 
-    --shadow-glow: 0 0 18px rgba(37, 99, 235, 0.25);
+    /* effects */
+    --shadow-glow: 0 0 18px rgba(245, 43, 83, 0.25);
 
-    --gradient-primary: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
-    --gradient-accent: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%);
-    --gradient-surface: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+    /* gradients */
+    --gradient-primary: linear-gradient(135deg, #f52b53 0%, #ff5f7a 100%);
+    --gradient-accent: linear-gradient(135deg, #c81e3f 0%, #f52b53 100%);
+    --gradient-surface: linear-gradient(135deg, #ffffff 0%, #fff5f7 100%);
 }
 
 
@@ -651,6 +661,7 @@ footer {
         transform: translateY(-4px) scale(1.01);
     }
 }
+
 
 
 
