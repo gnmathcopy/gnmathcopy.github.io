@@ -32,7 +32,7 @@
     --gradient-surface: linear-gradient(135deg, #D6001C 0%, #D6001C 100%);
 }
 
-.rose-mode {
+.dark-mode {
     /* primary brand color */
     --primary: #f52b53;
     --primary-hover: #e02449;
@@ -661,6 +661,7 @@ footer {
         transform: translateY(-4px) scale(1.01);
     }
 }
+
 
 
 
