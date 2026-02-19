@@ -143,7 +143,45 @@ function startAutoRefresh() {
 }
 
 
+function populateTags() {
+    if (!filterOptions) return;
 
+    let allTags = [];
+
+    zones.forEach(zone => {
+        if (Array.isArray(zone.special)) {
+            allTags.push(...zone.special);
+        }
+    });
+
+    allTags = [...new Set(allTags)];
+
+    while (filterOptions.children.length > 1) {
+        filterOptions.removeChild(filterOptions.lastChild);
+    }
+
+    allTags.forEach(tag => {
+        const opt = document.createElement("option");
+        opt.value = tag;
+        opt.textContent = tag;
+        filterOptions.appendChild(opt);
+    });
+}
+
+function filterZonesByTag() {
+    const tag = filterOptions.value;
+
+    if (!tag || tag === "none") {
+        displayZones(zones);
+        return;
+    }
+
+    const filtered = zones.filter(z =>
+        Array.isArray(z.special) && z.special.includes(tag)
+    );
+
+    displayZones(filtered);
+}
 function sortZones() {
     const sortBy = sortOptions.value;
     if (sortBy === 'name') {
@@ -863,6 +901,7 @@ document.addEventListener("DOMContentLoaded", () => {
         randomBtn.addEventListener("click", randomZone);
     }
 });
+
 
 
 
