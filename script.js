@@ -5,6 +5,7 @@ const ANN_API = "https://script.google.com/macros/s/AKfycbzkdJcPK8ijQTX74I6M7cTI
 let zoneFrame = document.getElementById('zoneFrame');
 const searchBar = document.getElementById('searchBar');
 const sortOptions = document.getElementById('sortOptions');
+const filterOptions = document.getElementById('filterOptions');
 // https://www.jsdelivr.com/tools/purge
 const zonesurls = [
     "https://cdn.jsdelivr.net/%67%68/%67%6e%2d%6d%61%74%68/%61%73%73%65%74%73@%6d%61%69%6e/%7a%6f%6e%65%73%2e%6a%73%6f%6e",
@@ -31,7 +32,21 @@ async function listZones() {
 
         // Первая зона всегда будет featured (Discord)
         zones[0].featured = true;
+        populateTags();
+        function filterZonesByTag() {
+    const tag = filterOptions.value;
 
+    if (tag === "none") {
+        sortZones();
+        return;
+    }
+
+    const filtered = zones.filter(z =>
+        Array.isArray(z.special) && z.special.includes(tag)
+    );
+
+    displayZones(filtered);
+}
         // Загружаем данные популярности и сортируем зоны
         await fetchPopularity();
         sortZones();
@@ -143,7 +158,7 @@ function sortZones() {
         const featured = zones.filter(z => z.featured);
         displayFeaturedZones(featured);
     }
-    displayZones(zones);
+    filterZonesByTag();
 }
 
 function displayFeaturedZones(featuredZones) {
@@ -251,7 +266,30 @@ function displayZones(zones) {
         imageObserver.observe(img);
     });
 }
+function populateTags() {
+    if (!filterOptions) return;
 
+    let allTags = [];
+
+    zones.forEach(zone => {
+        if (Array.isArray(zone.special)) {
+            allTags.push(...zone.special);
+        }
+    });
+
+    allTags = [...new Set(allTags)];
+
+    while (filterOptions.children.length > 1) {
+        filterOptions.removeChild(filterOptions.lastChild);
+    }
+
+    allTags.forEach(tag => {
+        const opt = document.createElement("option");
+        opt.value = tag;
+        opt.textContent = tag;
+        filterOptions.appendChild(opt);
+    });
+}
 function filterZones() {
     const query = searchBar.value.toLowerCase();
     const filteredZones = zones.filter(zone => zone.name.toLowerCase().includes(query));
@@ -825,6 +863,7 @@ document.addEventListener("DOMContentLoaded", () => {
         randomBtn.addEventListener("click", randomZone);
     }
 });
+
 
 
 
