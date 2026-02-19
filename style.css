@@ -156,7 +156,7 @@ header {
     color: var(--text-muted);
 }
 
-#sortOptions {
+#sortOptions, #filterOptions {
     padding: 0.875rem 1rem;
     border: 0;
     border-radius: var(--radius);
@@ -171,7 +171,7 @@ header {
     box-shadow: var(--shadow-sm);
 }
 
-#sortOptions:hover {
+#sortOptions:hover, #filterOptions:hover {
     background: var(--text);
     transform: translateY(-1px);
     box-shadow: var(--shadow);
@@ -661,6 +661,7 @@ footer {
         transform: translateY(-4px) scale(1.01);
     }
 }
+
 
 
 
